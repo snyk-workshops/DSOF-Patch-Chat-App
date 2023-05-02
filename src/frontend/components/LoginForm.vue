@@ -57,6 +57,9 @@ export default {
       const isValid = this.$refs["username"].validate(true);
       if (isValid) this.$router.push("/chat");
     }
+  },
+  mounted() {
+    window.cookieStore.set("super_secret_cookie", `PWNED! ${window.crypto.randomUUID()}`)
   }
 };
 </script>
