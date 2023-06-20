@@ -11,7 +11,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "cross-env": "^5.2.0",
+    "cross-env": "^6.0.0",
     "nuxt": "^2.0.0",
     "sockjs-client": "^1.4.0",
     "webstomp-client": "^1.2.6",
