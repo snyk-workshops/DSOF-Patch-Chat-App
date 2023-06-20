@@ -11,8 +11,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Value("#{ @environment['stomp.allowed_domains']}")
-    private String[] stompAllowedDomains;
+//    @Value("#{ @environment['stomp.allowed_domains']}")
+//    private String[] stompAllowedDomains;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -23,7 +23,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins(stompAllowedDomains)
+//                .setAllowedOrigins(stompAllowedDomains)
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 }
