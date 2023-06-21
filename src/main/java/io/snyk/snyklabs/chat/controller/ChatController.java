@@ -7,11 +7,11 @@ import io.snyk.snyklabs.chat.dto.SimpleRoomDto;
 import io.snyk.snyklabs.chat.dto.UserRoomKeyDto;
 import io.snyk.snyklabs.chat.service.RedisBroadcastService;
 import io.snyk.snyklabs.chat.service.RoomService;
+import io.snyk.snyklabs.message.ChatRoomUserListEvent;
 import io.snyk.snyklabs.message.Message;
 import io.snyk.snyklabs.message.MessageEvent;
 import io.snyk.snyklabs.message.MessageTypes;
 import io.snyk.snyklabs.user.User;
-import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
 
 import static java.lang.String.format;
 
@@ -68,13 +69,15 @@ public class ChatController {
         return roomService.addUserToRoom(userRoomKey)
                 .map(userList -> {
                     messagingTemplate.convertAndSend(format("/chat/%s/userList", userList.roomKey), userList);
-//                    redisBroadcastService.publish(new MessageEvent(userList, format("/chat/%s/userList", userList.roomKey)));
+                    redisBroadcastService.publishChatRoomUserListEvent(
+                        new ChatRoomUserListEvent(format("/chat/%s/userList", userList.roomKey), userList)
+                    );
                     sendMessage(userRoomKey.roomKey, joinMessage);
                     return userList;
                 })
                 .getOrElseGet(appError -> {
                     log.error("invalid room id...");
-                    return new ChatRoomUserListDto(userRoomKey.roomKey, HashSet.empty());
+                    return new ChatRoomUserListDto(userRoomKey.roomKey, new HashSet<>());
                 });
     }
 
@@ -89,14 +92,14 @@ public class ChatController {
                 })
                 .getOrElseGet(appError -> {
                     log.error("invalid room id...");
-                    return new ChatRoomUserListDto(userRoomKey.roomKey, HashSet.empty());
+                    return new ChatRoomUserListDto(userRoomKey.roomKey, new HashSet<>());
                 });
     }
 
     @MessageMapping("chat/{roomId}/sendMessage")
     public Message sendMessage(@DestinationVariable String roomId, Message message) {
         //messagingTemplate.convertAndSend(format("/chat/%s/messages", roomId), message);
-        redisBroadcastService.publish(new MessageEvent(message, format("/chat/%s/messages", roomId)));
+        redisBroadcastService.publishMessageEvent(new MessageEvent(format("/chat/%s/messages", roomId), message));
         return message;
     }
 

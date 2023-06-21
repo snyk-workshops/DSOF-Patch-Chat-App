@@ -2,13 +2,13 @@ package io.snyk.snyklabs.message;
 
 public class MessageEvent {
 
-    private Message message;
     private String topic;
+    private Message message;
 
     public MessageEvent(){}
-    public MessageEvent(Message message, String topic) {
-        this.message = message;
+    public MessageEvent(String topic, Message message) {
         this.topic = topic;
+        this.message = message;
     }
 
     public Message getMessage() {
