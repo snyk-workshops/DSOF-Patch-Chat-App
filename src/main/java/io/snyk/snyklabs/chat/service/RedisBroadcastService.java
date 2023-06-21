@@ -1,9 +1,9 @@
 package io.snyk.snyklabs.chat.service;
 
-import io.snyk.snyklabs.chat.model.BroadcastEvent;
+import io.snyk.snyklabs.message.MessageEvent;
 
 public interface RedisBroadcastService {
 
-    void publish(BroadcastEvent event);
+    void publish(MessageEvent messageEvent);
     void subscribe();
 }

@@ -114,14 +114,6 @@ export const actions = {
   },
   sendMessage({ state }, message) {
     message.message.userName = state.username;
-    fetch("http://localhost:8080/api/notification", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // body: JSON.stringify(message.message)
-      body: JSON.stringify({topic: 'main-room', message: message.message.message})
-    })
     this.stompClient.send(
       "/app/chat/" + message.roomId + "/sendMessage",
       JSON.stringify(message.message)

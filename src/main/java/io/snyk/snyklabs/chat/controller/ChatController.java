@@ -5,8 +5,10 @@ import io.snyk.snyklabs.chat.dto.ChatRoomUserListDto;
 import io.snyk.snyklabs.chat.dto.NewRoomDto;
 import io.snyk.snyklabs.chat.dto.SimpleRoomDto;
 import io.snyk.snyklabs.chat.dto.UserRoomKeyDto;
+import io.snyk.snyklabs.chat.service.RedisBroadcastService;
 import io.snyk.snyklabs.chat.service.RoomService;
 import io.snyk.snyklabs.message.Message;
+import io.snyk.snyklabs.message.MessageEvent;
 import io.snyk.snyklabs.message.MessageTypes;
 import io.snyk.snyklabs.user.User;
 import io.vavr.collection.HashSet;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 import static java.lang.String.format;
@@ -36,10 +37,15 @@ public class ChatController {
 
     private final RoomService roomService;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final RedisBroadcastService redisBroadcastService;
 
-    public ChatController(RoomService roomService, SimpMessageSendingOperations messagingTemplate) {
+    public ChatController(
+        RoomService roomService, SimpMessageSendingOperations messagingTemplate,
+        RedisBroadcastService redisBroadcastService
+    ) {
         this.roomService = roomService;
         this.messagingTemplate = messagingTemplate;
+        this.redisBroadcastService = redisBroadcastService;
     }
 
     @SubscribeMapping("/chat/roomList")
@@ -62,6 +68,7 @@ public class ChatController {
         return roomService.addUserToRoom(userRoomKey)
                 .map(userList -> {
                     messagingTemplate.convertAndSend(format("/chat/%s/userList", userList.roomKey), userList);
+//                    redisBroadcastService.publish(new MessageEvent(userList, format("/chat/%s/userList", userList.roomKey)));
                     sendMessage(userRoomKey.roomKey, joinMessage);
                     return userList;
                 })
@@ -88,7 +95,8 @@ public class ChatController {
 
     @MessageMapping("chat/{roomId}/sendMessage")
     public Message sendMessage(@DestinationVariable String roomId, Message message) {
-        messagingTemplate.convertAndSend(format("/chat/%s/messages", roomId), message);
+        //messagingTemplate.convertAndSend(format("/chat/%s/messages", roomId), message);
+        redisBroadcastService.publish(new MessageEvent(message, format("/chat/%s/messages", roomId)));
         return message;
     }
 
