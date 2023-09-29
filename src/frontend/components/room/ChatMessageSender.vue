@@ -6,7 +6,7 @@
   >
     <form @submit.prevent="sendMessage">
       <v-text-field
-        counter="500"
+        :counter="maxMessageLength"
         :rules="rules"
         label="Type a message"
         type="text"
@@ -31,7 +31,8 @@ export default {
   data() {
     return {
       message: "",
-      rules: [v => v.length <= 500 || 'Max 500 characters']
+      maxMessageLength: 500,
+      rules: [v => v.length <= this.maxMessageLength || 'Max 500 characters']
     };
   },
   computed: {
@@ -41,9 +42,12 @@ export default {
   },
   methods: {
     sendMessage() {
+      if (this.message.length > this.maxMessageLength) {
+        return;
+      };
       const newMessage = {
         type: "MESSAGE",
-        message: (this.message.length > 500) ? this.message.substring(0,500) : this.message
+        message: this.message
       };
       const messageWithRoomId = { roomId: this.roomId, message: newMessage };
       this.$store.dispatch("main/sendMessage", messageWithRoomId);

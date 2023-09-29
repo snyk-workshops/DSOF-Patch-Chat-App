@@ -37,6 +37,8 @@ public class ChatController {
     private final RoomService roomService;
     private final SimpMessageSendingOperations messagingTemplate;
 
+    private final int MAX_MESSAGE_LENGTH = 500;
+
     public ChatController(RoomService roomService, SimpMessageSendingOperations messagingTemplate) {
         this.roomService = roomService;
         this.messagingTemplate = messagingTemplate;
@@ -88,6 +90,9 @@ public class ChatController {
 
     @MessageMapping("chat/{roomId}/sendMessage")
     public Message sendMessage(@DestinationVariable String roomId, Message message) {
+        if (message.message.length() > MAX_MESSAGE_LENGTH) {
+            message = new Message(message.type, message.userName, message.message.substring(0,MAX_MESSAGE_LENGTH));
+        }
         messagingTemplate.convertAndSend(format("/chat/%s/messages", roomId), message);
         return message;
     }

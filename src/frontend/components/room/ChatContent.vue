@@ -16,7 +16,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-text="message.userName"></v-list-item-title>
-            <v-list-item-subtitle v-html="marked(message.message)"></v-list-item-subtitle>
+            <v-list-item-subtitle class="message" v-html="marked(message.message)"></v-list-item-subtitle>
           </v-list-item-content>
         </template>
         <template v-else>
@@ -53,4 +53,8 @@ export default {
 </script>
 
 <style scoped>
+.message {
+  inline-size: 500px;
+  overflow-wrap: break-word;
+}
 </style>
