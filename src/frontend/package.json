@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "cross-env": "^5.2.0",
-    "nuxt": "^2.0.0",
-    "sockjs-client": "^1.6.1",
+    "nuxt": "^2.17.2",
+    "sockjs-client": "^1.4.0",
     "webstomp-client": "^1.2.6",
     "marked": "0.3.5"
   },
