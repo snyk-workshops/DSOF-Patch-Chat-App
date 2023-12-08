@@ -99,7 +99,7 @@ public class ChatController {
 
     @GetMapping("/hello")
     public void hello(@RequestParam String user, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/plain");
         response.getWriter().write("<h1>Hello: " + user + "</h1>");
         response.getWriter().flush();
     }
