@@ -39,10 +39,10 @@ export const mutations = {
     state.roomList = roomList;
   },
   subscribe(state, roomKey) {
-    subscribe(state, roomKey, true);
+    main_subscribe(state, roomKey, true);
   },
   unsubscribe(state, roomKey) {
-    subscribe(state, roomKey, false);
+    main_subscribe(state, roomKey, false);
   },
   sendMessage(state, newMessage) {
     const roomMessage = state.roomMessages[newMessage.roomKey];
@@ -121,7 +121,7 @@ export const actions = {
   }
 };
 
-function subscribe(state, roomKey, value) {
+function main_subscribe(state, roomKey, value) {
   state.roomList.map(room =>
     room.key === roomKey ? (room.subscribed = value) : room
   );
