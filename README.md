@@ -20,7 +20,7 @@ Launch the backend with:
 
 ```
 mvn clean install
-mvn spring-boot:run
+CORS_ALLOWED_DOMAINS=http://localhost:3000 mvn spring-boot:run mvn spring-boot:run
 ```
 
 The backend will launch on port `8080`
