@@ -31,8 +31,12 @@
 
 <script>
 import marked from 'marked';
+var renderer = new marked.Renderer();
+renderer.image = function(href, title, text) {
+  return `<img src="${href}" alt="${text}" title="${title}" style="max-width: 300px; height: auto;">`;
+};
+marked.setOptions({ sanitize: true, renderer: renderer });
 
-marked.setOptions({ sanitize: true });
 
 export default {
   computed: {
