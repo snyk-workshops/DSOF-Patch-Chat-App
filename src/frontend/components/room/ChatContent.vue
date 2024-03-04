@@ -30,11 +30,12 @@
 </template>
 
 <script>
-import marked from 'marked';
 var renderer = new marked.Renderer();
 renderer.image = function(href, title, text) {
   return `<img src="${href}" alt="${text}" title="${title}" style="max-width: 300px; height: auto;">`;
 };
+
+import marked from 'marked';
 marked.setOptions({ sanitize: true, renderer: renderer });
 
 
