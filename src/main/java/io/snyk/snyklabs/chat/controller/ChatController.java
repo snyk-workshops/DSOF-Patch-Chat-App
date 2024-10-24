@@ -100,6 +100,7 @@ public class ChatController {
     @GetMapping("/hello")
     public void hello(@RequestParam String user, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
+        String safeUser = StringEscapeUtils.escapeHtml4(user);
         response.getWriter().write("<h1>Hello: " + user + "</h1>");
         response.getWriter().flush();
     }
