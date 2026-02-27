@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class MultiroomChatApplication {
 
-	@Value("#{ @environment['cors.allowed_domains']}")
+	@Value("${cors.allowed_domains:''}")
 	private String[] corsAllowedDomains;
 
 	public static void main(String[] args) {

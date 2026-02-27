@@ -3,14 +3,11 @@ A purposely vulnerable, multiroom chat application with Spring Boot on the backe
 
 ## Overview
 
-This project is based off the excellent work of [kojotdev](http://kojotdev.com). Read more about it 
-[here](http://kojotdev.com/2019/09/multiroom-chat-with-spring-websocket-nuxt-vue-vuex/).
+This project is based off the excellent work of kojotdev (now defunct). 
 
 The project is organized in such a way that it can easily be run locally and be deployed for demonstration.
 
 **NOTE:** The project has known vulnerabilities in it for demonstration purposes. PLEASE do not attempt to use in any production environment.
-
-![multiroom-chatspring-vue-websocket-live-example](http://kojotdev.com/wp-content/uploads/2019/09/multiroom-chat-live.gif)
 
 ## Requirements
 
@@ -57,7 +54,7 @@ app:
 
 The last step is what enables the frontend app to be served by the spring boot app.
 
-You can run the spring boot app as before:
+You can run the spring boot app:
 
 ```
 mvn spring-boot:run
