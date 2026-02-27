@@ -34,7 +34,7 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: [["@nuxtjs/vuetify", { defaultAssets: { icons: "md" } }]],
+  modules: [["@nuxtjs/vuetify", { defaultAssets: { icons: "md" }, treeShake: false }]],
 
   /*
    ** Build configuration
