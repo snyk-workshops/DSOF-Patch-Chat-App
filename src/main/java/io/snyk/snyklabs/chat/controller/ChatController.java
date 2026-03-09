@@ -11,6 +11,7 @@ import io.snyk.snyklabs.message.MessageTypes;
 import io.snyk.snyklabs.user.User;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
+import org.owasp.encoder.Encode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -100,7 +101,8 @@ public class ChatController {
     @GetMapping("/hello")
     public void hello(@RequestParam String user, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        response.getWriter().write("<h1>Hello: " + user + "</h1>");
+        String sanitizedUser = Encode.forHtml(user);
+        response.getWriter().write("<h1>Hello: " + sanitizedUser + "</h1>");
         response.getWriter().flush();
     }
 
